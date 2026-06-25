@@ -18,6 +18,24 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+        exclude:
+            # Permanent — never touched by this plan
+            - '../src/Modules/Invoices/Domain/Entites/Product.php'
+            - '../src/Modules/Invoices/Domain/ValueObjects/ProductName.php'
+            - '../src/Modules/Invoices/Domain/ValueObjects/Quantity.php'
+            - '../src/Modules/Invoices/Factories/ProductFactory.php'
+            - '../src/Modules/Invoices/UseCases/CreateInvoice/SendInvoiceHandler.php'
+            # Temporary — Task 6 fixes these and removes them from this list
+            - '../src/Modules/Invoices/Domain/Entites/Invoice.php'
+            - '../src/Modules/Invoices/Domain/Enums/StatusEnum.php'
+            - '../src/Modules/Invoices/Domain/ValueObjects/CustomerEmail.php'
+            - '../src/Modules/Invoices/Domain/ValueObjects/CustomerName.php'
+            - '../src/Modules/Shared/Traits/DomainEvent.php'
+            - '../src/Modules/Shared/Traits/DomainEventsTrait.php'
+            - '../src/Modules/Shared/ValueObjects/Money.php'
+            # Temporary — Task 10 fixes these and removes them from this list
+            - '../src/Modules/Notifications/Api/Dtos/NotifyData.php'
+            - '../src/Modules/Notifications/Api/Events/WebhookDeliveredEvent.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
