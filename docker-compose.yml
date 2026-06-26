@@ -4,6 +4,10 @@ services:
       context: .
       dockerfile: ./docker/api/Dockerfile
       target: dev
+      args:
+        USER_ID: ${UID:-1001}
+        GROUP_ID: ${GID:-1001}
+    user: "www-data:www-data"
     volumes:
       - .:/var/www/html
       # - /var/www/html/vendor
@@ -13,6 +17,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    environment:
+      PHP_IDE_CONFIG: "serverName=php-invoice-server"
 
   api_nginx:
     image: nginx:alpine
@@ -29,13 +35,13 @@ services:
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: app
-      POSTGRES_DB: pay_upfront
+      POSTGRES_DB: postgres_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U app -d pay_upfront"]
+      test: ["CMD-SHELL", "pg_isready -U app -d postgres_db"]
       interval: 5s
       timeout: 5s
       retries: 5
