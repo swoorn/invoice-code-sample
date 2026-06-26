@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Notifications\Api\Dtos;
+namespace App\Modules\Notifications\Api\Dtos;
 
 use Ramsey\Uuid\UuidInterface;
 

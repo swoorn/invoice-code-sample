@@ -15,5 +15,11 @@ framework:
 
         transports:
             sync: 'sync://'
+            async_doctrine: 'doctrine://default?queue_name=notifications'
 
-        routing: []
+        routing:
+            # 1. Route the notification background tasks to the async database queue
+            'App\Modules\Notifications\UseCases\SendEmailNotification\SendEmailNotificationCommand': async_doctrine
+
+            # 2. Explicitly route the cross-module event to execute synchronously
+            'App\Modules\Notifications\Api\Events\ResourceDeliveredEvent': sync

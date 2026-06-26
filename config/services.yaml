@@ -19,23 +19,22 @@ services:
     App\:
         resource: '../src/'
         exclude:
-            # Permanent — never touched by this plan
-            - '../src/Modules/Invoices/Domain/Entites/Product.php'
-            - '../src/Modules/Invoices/Domain/ValueObjects/ProductName.php'
-            - '../src/Modules/Invoices/Domain/ValueObjects/Quantity.php'
-            - '../src/Modules/Invoices/Factories/ProductFactory.php'
-            - '../src/Modules/Invoices/UseCases/CreateInvoice/SendInvoiceHandler.php'
-            # Temporary — Task 6 fixes these and removes them from this list
-            - '../src/Modules/Invoices/Domain/Entites/Invoice.php'
-            - '../src/Modules/Invoices/Domain/Enums/StatusEnum.php'
-            - '../src/Modules/Invoices/Domain/ValueObjects/CustomerEmail.php'
-            - '../src/Modules/Invoices/Domain/ValueObjects/CustomerName.php'
-            - '../src/Modules/Shared/Traits/DomainEvent.php'
-            - '../src/Modules/Shared/Traits/DomainEventsTrait.php'
-            - '../src/Modules/Shared/ValueObjects/Money.php'
-            # Temporary — Task 10 fixes these and removes them from this list
-            - '../src/Modules/Notifications/Api/Dtos/NotifyData.php'
-            - '../src/Modules/Notifications/Api/Events/WebhookDeliveredEvent.php'
+            # General framework standard exclusions
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+            # Universal module exclusions using glob patterns
+            - '../src/Modules/**/Domain/Entities/'
+            - '../src/Modules/**/Domain/ValueObjects/'
+            - '../src/Modules/**/Domain/Enums/'
+            - '../src/Modules/**/Domain/Events/'
+            - '../src/Modules/**/Api/Dtos/'
+            - '../src/Modules/**/Api/Events/'
+            - '../src/Modules/Shared/Traits/'
+            - '../src/Modules/Shared/ValueObjects/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Modules\Invoices\Domain\Repositories\InvoiceRepositoryInterface: '@App\Modules\Invoices\Infrastructure\Repositories\DoctrineInvoiceRepository'

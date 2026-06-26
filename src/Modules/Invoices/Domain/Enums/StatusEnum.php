@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Invoices\Domain\Enums;
+namespace App\Modules\Invoices\Domain\Enums;
 
 enum StatusEnum: string
 {
