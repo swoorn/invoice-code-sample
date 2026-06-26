@@ -18,6 +18,23 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+        exclude:
+            # General framework standard exclusions
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+            # Universal module exclusions using glob patterns
+            - '../src/Modules/**/Domain/Entities/'
+            - '../src/Modules/**/Domain/ValueObjects/'
+            - '../src/Modules/**/Domain/Enums/'
+            - '../src/Modules/**/Domain/Events/'
+            - '../src/Modules/**/Api/Dtos/'
+            - '../src/Modules/**/Api/Events/'
+            - '../src/Modules/Shared/Traits/'
+            - '../src/Modules/Shared/ValueObjects/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Modules\Invoices\Domain\Repositories\InvoiceRepositoryInterface: '@App\Modules\Invoices\Infrastructure\Repositories\DoctrineInvoiceRepository'

@@ -1,22 +1,25 @@
 framework:
     messenger:
-        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-        # failure_transport: failed
+        default_bus: command.bus
+
+        buses:
+            command.bus:
+                middleware:
+                    - doctrine_transaction
+            event.bus:
+                default_middleware:
+                    enabled: true
+                    allow_no_handlers: true
+                middleware:
+                    - doctrine_transaction
 
         transports:
-            # https://symfony.com/doc/current/messenger.html#transport-configuration
-            # async: '%env(MESSENGER_TRANSPORT_DSN)%'
-            # failed: 'doctrine://default?queue_name=failed'
             sync: 'sync://'
+            async_doctrine: 'doctrine://default?queue_name=notifications'
 
         routing:
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+            # 1. Route the notification background tasks to the async database queue
+            'App\Modules\Notifications\UseCases\SendEmailNotification\SendEmailNotificationCommand': async_doctrine
 
-# when@test:
-#    framework:
-#        messenger:
-#            transports:
-#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
-#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
-#                async: 'in-memory://'
+            # 2. Explicitly route the cross-module event to execute synchronously
+            'App\Modules\Notifications\Api\Events\ResourceDeliveredEvent': sync

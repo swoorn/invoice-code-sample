@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Invoices\Domain\Traits;
+namespace App\Modules\Shared\Traits;
 
 interface DomainEvent
 {
